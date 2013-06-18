@@ -1,0 +1,30 @@
+\begin{lstlisting}[label=compress_option,caption=Opciones para la configuraci\'on de los compresos.]
+<?php
+defined( '_JHAEXEC' ) or die( 'Access Denied' );
+
+class Archive {
+	function __construct($name) {
+		$this->options = array (
+			'basedir' => ".",
+			'name' => $name,
+			'prepend' => "",
+			'inmemory' => 0,
+			'overwrite' => 0,
+			'recurse' => 1,
+			'storepaths' => 1,
+			'followlinks' => 0,
+			'level' => 3,
+			'method' => 1,
+			'sfx' => "",
+			'type' => "",
+			'comment' => ""
+		);
+		$this->files = array ();
+		$this->exclude = array ();
+		$this->storeonly = array ();
+		$this->error = array ();
+	}
+    .....
+}
+?>
+\end{lstlisting}

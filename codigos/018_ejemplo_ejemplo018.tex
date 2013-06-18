@@ -1,0 +1,44 @@
+\begin{lstlisting}[label=jha_directory,caption=JhaDirectory.]
+<?php
+...
+
+class JhaDirectory extends JhaObject {
+	var $_pathfile;
+	var $_files;
+	
+	public function __construct($pathfile = '.'){
+		...
+	}
+	
+	public function setPathFile($pathfile){
+		$this->_pathfile = $pathfile;
+	}
+	
+	public function read(){
+        $this->_files = scandir($this->_pathfile);
+	}
+	
+	/**
+	 * En funcion al filepath recibido, retorna todos los directorios existentes en el.
+	 */
+	public function getFolders(){
+		...
+	}
+	
+	/**
+	 * En funcion al filepath recibido, retorna todos los archivos existentes en el.
+	 * No toma en cuenta los archivos de los directorios.
+	 */
+	public function getFiles($filetypes = array()){
+		...
+	}
+	
+	/**
+	 * Encargado de validar que todos los archivos del directorio tengan la misma extension
+	 */
+	private function validateExtension($file, $filetypes){
+		...
+	}
+}
+?>
+\end{lstlisting}

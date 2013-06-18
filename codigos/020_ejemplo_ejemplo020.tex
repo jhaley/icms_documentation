@@ -1,0 +1,76 @@
+\begin{lstlisting}[label=jha_view,caption=JhaView.]
+<?php
+...
+
+class JhaView extends JhaObject {
+
+    protected $_name;
+    protected $_module;
+    protected $_layout;
+    protected $_ext;
+    protected $_model;
+    
+    public function __construct(){
+        if (empty( $this->_name ) || empty( $this->_module )) {
+            $this->_name = $this->getName();
+            $this->_module = $this->getModule();
+        }
+        $this->_layout = $this->_name;
+        $this->_ext = '.php';
+    }
+    
+    public function display(){
+    	$file = $this->_layout . $this->_ext;
+   	    $content = '';
+   	    $urlFile = $GLOBALS['JHA_MODULE_PATH'].'views'.DS.'html'.DS.$file;
+   	    if(file_exists( $urlFile )){
+   	    	ob_start();
+            require_once $urlFile;
+            $content = ob_get_contents();
+            ob_end_clean();
+            echo $content;
+        }
+        else{
+        	throw new Exception("Vista no encontrada");
+        }
+    }
+    
+    public function &getModel($model = ''){
+    	$model = (empty($model) ? $this->getName() : $model);
+        $prefix = $this->_module . 'Model';
+        jhaimport('jhaley.mvc.model');
+        $this->model = JhaModel::getInstance($model, $prefix);
+        return $this->model;
+    }
+    ...
+    
+    function assignRef($key, &$val) {
+        if (is_string($key) && substr($key, 0, 1) != '_') {
+            $this->$key =& $val;
+            return true;
+        }
+        return false;
+    }
+    
+    public function &getInstance($name, $prefix){
+        $name = preg_replace('/[^A-Z0-9_\.-]/i', '', $name);
+        $prefix = preg_replace('/[^A-Z0-9_\.-]/i', '', $prefix);
+		    $viewClass	= $prefix.$name;
+		    $result = false;
+		    if (!class_exists( $viewClass )) {
+			    $path = $GLOBALS['JHA_MODULE_PATH'].'views'.DS.$name.'.php';
+			    if ($path) {
+				    require_once $path;
+				    if (!class_exists( $viewClass )) {
+					    throw new Exception( 'Vista ' . $viewClass . ' no encontrado.' );
+					    return $result;
+				    }
+			    }
+			    else return $result;
+		    }
+		    $result = new $viewClass();
+		    return $result;
+    }
+}
+?>
+\end{lstlisting}

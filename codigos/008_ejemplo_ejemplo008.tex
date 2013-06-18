@@ -1,0 +1,29 @@
+\begin{lstlisting}[label=mvp_vista,caption=Vista,language=HTML]
+<html>
+	<head></head>
+	<body>
+		<div>
+		    <table class="adminlist" cellspacing="1">
+    			<thead>
+		        	<tr>
+						<th class="title">ID</th>
+                		<th nowrap="nowrap">Nombre</th>
+		                <th nowrap="nowrap">Descripcio^oacute<n</th>
+        		    </tr>
+		        </thead>
+        		<tbody>
+		        	<?php foreach ($items as $row) {
+        			$link = 'index.php?accion=alguna_accion&id='. $row->id;
+		        	?>
+        		    <tr>
+                		<td><?php echo $row->id; ?></td>
+		                <td><a href="<?php echo $link; ?>"><?php echo $row->nombre; ?></a></td>
+        		        <td><a href="<?php echo $link; ?>"><?php echo $row->descripcion; ?></a></td>
+		            </tr>
+        		    <?php } ?>
+		        </tbody>
+		    </table>
+		</div>
+	</body>
+</html>
+\end{lstlisting}

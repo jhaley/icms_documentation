@@ -1,0 +1,17 @@
+\begin{lstlisting}[label=mvc_modelo,caption=Clase Modelo,language=PHP]
+<?php
+
+class Modelo {
+	protected $db;
+	public function __construct() {
+		$this->db = new PDO('mysql:host=localhost;dbname=bd', 'root', 'password');	
+	}
+	
+	public function getDatos(){
+		$consulta = $this->db->prepare('SELECT * FROM items');
+		$consulta->execute();
+		return $consulta->fetchAll();
+	}
+}
+?>
+\end{lstlisting}

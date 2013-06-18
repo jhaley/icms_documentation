@@ -1,0 +1,119 @@
+\begin{lstlisting}[label=jha_dbo,caption=DBO (DataBase Object).]
+<?php
+...
+
+class JhaDBO extends JhaObject {
+	//Conexion a la base de datos
+	private $_conexion;
+	
+	//Configuracion del sitio
+	private $_config;
+	
+	//Consulta SQL 
+	private $_sql;
+	private $_empty;
+	
+	//Offset y limit, sirven para obtener resultados parciales.
+	private $_offset;
+	private $_limit;
+	private $_cursor;
+	
+	function __construct($config = null){
+		$this->_config = $config;
+		if(!$this->open()){
+			throw new Exception ( "Error al conectarse a la Base de Datos." );
+		}
+	}
+	...
+	
+	/**
+	 * Abre una conexion a la base de datos, esta conexion se deberia abrir una sola vez.
+	 */
+	public function open(){
+		...
+	}
+	
+  public function close() {
+    ...
+  }
+    
+  public function setQuery($query, $offset = 0, $limit = -1){
+  	$this->_sql = $this->replacePreffix($query);
+  	$this->_offset = $offset;
+  	$this->_limit = $limit;
+  }
+  
+  /**
+   * Establece la consulta SQL y luego la ejecuta
+   */
+  public function executeQuery($query){
+  	...
+  }
+  
+  private function replacePreffix($query){
+  	return str_replace("#__", $this->_config->db_preffix, $query);
+  }
+  
+  /**
+   * Ejecuta la consulta SQL
+   */
+  private function _query(){
+  	...
+  }
+  ...
+  
+  /**
+   * Tras la ejecucion de la consulta SQL, este metodo retorna el resultado como un Objeto
+   */
+  public function loadObject() {
+    ...
+  }
+  
+  /**
+   * Tras la ejecucion de la consulta SQL, este metodo retorna el resultado como una lista de Objetos
+   */
+  public function loadObjectList( $key = '' ) {
+    ...
+  }
+  
+  /**
+   * Inserta los datos del objeto en la base de datos.
+   */
+  public function insertObject( $table, &$object, $keyName = NULL ) {
+    ...
+  }
+  
+  /**
+   * Actualiza la informacion  de la base da datos con la informacion del objeto
+   */
+  public function updateObject( $table, &$object, $keyName, $updateNulls = true ) {
+    ...
+  }
+  
+  /**
+   * Elimina el registro descrito por el objeto
+   */
+  public function deleteObject( $table, &$object, $keyName = NULL ) {
+    ...
+  }
+
+  public function insertid() {
+    return mysql_insert_id($this->_conexion);
+  }
+  
+  /**
+   * Inserta registros en la base de datos con mas de un valor como clave primaria.
+   */
+  public function insertGeneralObject( $table, $elems) {
+    ...
+  }
+  
+  /**
+   * Elimina registros de la base de datos que tienen mas de un valor como clave primaria.
+   */
+  public function deleteGeneralObject( $table, $elems) {
+    ...
+  }
+}
+?>
+\end{lstlisting}

@@ -1,0 +1,108 @@
+\documentclass[11pt,letterpaper]{report}
+
+% Packages
+\usepackage[left=3cm,top=2.5cm,right=2.5cm,bottom=2.5cm]{geometry}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{relsize}
+\usepackage{url}
+\usepackage{color}
+\usepackage{latexsym}
+\usepackage{float}
+\usepackage{prettyref}
+\usepackage{xspace}
+\usepackage{fancyhdr}
+\usepackage{apacite}
+\usepackage{listings}
+
+\setcounter{secnumdepth}{3}
+%\setcounter{tocdepth}{3}
+
+\pagestyle{fancy}
+
+% Defining new commands
+\newcommand{\pref}[1]{\prettyref{#1}}
+
+\renewcommand{\lstlistingname}{C\'odigo}
+
+%Listing setup
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=PHP,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\ttfamily\scriptsize},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=4,
+  captionpos=b,
+  numberbychapter=false,
+  morekeywords={class, function, public, protected, private, echo, print}
+}
+
+
+
+% Styling page
+\pagestyle{fancy}
+\lhead{}
+\chead{}
+\rhead{\slshape \small \rightmark}
+\lfoot{}
+\cfoot{\small \thepage}
+\rfoot{}
+
+%Including all caps
+\includeonly{
+	002_caratula_Caratula
+	,003_dedicatoria_Dedicatoria
+	,004_agradecimientos_Agradecimientos
+	,005_resumen_Resumen
+	,006_cap01_Introduccion
+	,007_cap02_MarcoReferencial
+	,008_cap03_AreaDeAplicacion
+	,009_cap04_DesarrolloDelProyecto
+	,010_cap05_ConclucionesYRecomendaciones
+}
+
+
+\begin{document}
+
+%Adding the Cover
+\include{002_caratula_Caratula}
+
+%Adding Dedicatories
+\pagenumbering{roman} \setcounter{page}{1}
+\include{003_dedicatoria_Dedicatoria}
+\newpage
+
+\include{004_agradecimientos_Agradecimientos}
+\newpage
+
+\include{005_resumen_Resumen}
+\newpage
+
+\addcontentsline{toc}{chapter}{\'Indice General}
+\tableofcontents
+
+\cleardoublepage
+\pagenumbering{arabic} \setcounter{page}{1}
+\include{006_cap01_Introduccion}
+\include{007_cap02_MarcoReferencial}
+\include{008_cap03_AreaDeAplicacion}
+\include{009_cap04_DesarrolloDelProyecto}
+\include{010_cap05_ConclucionesYRecomendaciones}
+
+\bibliographystyle{apacite}
+\bibliography{011_bibliografia_Bibliografia.bib}
+
+\end{document}

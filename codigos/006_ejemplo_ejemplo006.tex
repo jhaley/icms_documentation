@@ -1,0 +1,11 @@
+\begin{lstlisting}[label=mvp_presentador,caption=Clase Presentador,language=PHP]
+<?php
+class Presentador {
+	public function mostrar(){
+		$modelo = new Modelo();
+		$items = $modelo->getDatos();
+		require 'principal.php';
+	}
+}
+?>
+\end{lstlisting}

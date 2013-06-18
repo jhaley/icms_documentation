@@ -1,0 +1,44 @@
+\chapter{CONCLUSIONES Y RECOMENDACIONES}
+\newpage
+
+\section{Introducci\'on}
+Cada vez que se desarrolla un proyecto, surgen varias conclusiones, sugerencias y/o recomendaciones, que dan muestra de la experiencia obtenida del trabajo realizado.\\
+En las siguientes secciones se presentan las conclusiones y recomendaciones que son fruto del presente proyecto.
+
+\section{Conclusiones}
+
+\subsection{Sobre la dinamicidad y flexibilidad del sistema}
+Uno de los objetivos primordiales del presente proyecto fue darle dinamicidad y flexibilidad a \textit{i}CMS esto se ha conseguido desde dos enfoques principales: La arquitectura del sistema y Desde la interfaz gr\'afica de usuario.\\
+
+El hecho de utilizar alg\'un patr\'on arquitect\'onico, siempre es una mejora significativa para cualquier proyecto de software y su elecci\'on depende principalmente de las ventajas que proveen dichos patrones y como se utilizar\'an en el proyecto.\\
+En el presente proyecto se opt\'o por el patr\'on Modelo-Vista-Controlador (MVC), principalmente por la estructura que proveer\'ian para los m\'odulos del \textit{i}CMS.\\
+Otra de las razones para elegir el patr\'on MVC fue porque la aplicaci\'on resultante es f\'acil de entender, en t\'erminos de programaci\'on, incluso por quienes no tienen mucho conocimiento t\'ecnico de los conceptos de programaci\'on. Haciendo que el mantenimiento futuro del sistema sea relativamente sencillo.\\
+
+En cuanto a la Interfaz gr\'afica de usuario se ha logrado un avance significativo, muchos de los CMS actuales tienen una secci\'on para el usuario y otra para la administraci\'on, \textit{i}CMS combina ambos elementos en una sola pantalla, adem\'as incorpora elementos como AJAX para hacer que la administraci\'on sea mas directa, y por consiguiente tambi\'en se consigue que los resultados sean visibles al momento.
+
+
+\subsection{Sobre las tecnolog\'ias usadas}
+De las tecnolog\'ias web utilizadas (PHP, JavaScript, XML y AJAX) se ha visto que si bien existen librerias de terceros, la mayor\'ia de las veces estas proveen tantas funcionalidades que no se utilizan, y lo \'unico que se consigue es que la aplicaci\'on final sea muy pesada. En el presente proyecto m\'as del 90\% de las librer\'ias son de creaci\'on propia, del restante 10\%, 5\% est\'an basados en librer\'ias de terceros (Goaamb Framework) y el otro 5\% es en su totalidad librer\'ias de terceros (CKEditor and CKFinder).\\
+Cada vez que se considere el uso de alguna librer\'ia de terceros, es necesario tomar en consideraci\'on cuanto de esas librer\'ia va a ser utilizado, si el porcentaje es m\'inimo, es preferible crear una librer\'ia liviana. 
+
+\subsection{Sobre las herramientas usadas durante el desarrollo}
+Una de las experiencias mas enriquecedoras logradas durante el desarrollo del \textit{i}CMS, fue gracias a las distintas herramientas utilizadas durante el desarrollo del mismo.\\ Entre ellas tenemos el Entorno Integrado de Desarrollo (IDE) \emph{Zend Studio for Eclipse}, est\'a herramienta cuenta con un poderoso depurador que puede ser utilizado minetras la aplicaci\'on se ejecuta, lo cual facilit\'o enormemente la detecci\'on de errores que solo suceden en tiempo de ejecuci\'on.\\
+Otra de las herramientas fue el diagramador "Enterprise Architect", utilizado en el dise\~no de los distintos modelos de clases, siendo que no solo cuenta con el diagramador de clases sino que tambi\'en da soporte a una infinidad de modelos tanto UML como otros; est\'as caracter\'isticas la convierten en una poderosa alternativa a la hora de escoger una herramienta de este tipo.
+
+\section{Recomendaciones}
+
+\subsection{Sobre las herramientas usadas durante el desarrollo}
+Cuando se seleccionan las herramientas para el desarrollo de cualquier proyecto de software siempre hay que considerar, que la herramienta este dise\~nada para el lenguaje que uno haya elegido, tambi\'en considerar las facilidades que provee, Ejm. depurador, manipulaci\'on de componentes gr\'aficos, etc.
+
+\subsection{Sobre la Arquitectura del Sistema}
+En cuanto a la arquitectura los patrones m\'as utilizados son MVC y MVP, Se recomienda utilizar MVP ya que distribuye las tareas que debe cumplir cada elemento de forma m\'as consistente que MVC.
+
+\subsection{Sobre los posibles trabajos futuros a \textit{i}CMS}
+Entre los posibles trabajos a realizarse tomando como base el presente proyecto podr\'ian ser:
+\begin{itemize}
+\item Desarrollar el m\'odulo para la instalaci\'on/desinstalaci\'on de extensions (m\'odulos, bloques y plantillas).
+\item Mejorar el m\'odulo base para la personalizaci\'on de plantillas, si bien en este momento cumple con su tarea, quiz\'as sea bueno pensar en una arquitectura mejor definida para este elemento.
+\item Desarrollar extensiones para la gesti\'on de boletines informativos, galer\'ias de im\'agenes.
+\end{itemize}
+
+\clearpage

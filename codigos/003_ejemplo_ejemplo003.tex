@@ -1,0 +1,16 @@
+\begin{lstlisting}[label=mvc_vista,caption=Clase Vista,language=PHP]
+<?php
+class Vista {
+	protected $layout;
+    public function mostrar(){
+    	$model = new Modelo();
+    	$items = $model->getDatos();
+    	require 'plantillas/' . $layout . '.php';
+    }
+
+	public function setLayout($_layout = ''){
+    	$this->layout = $_layout;
+    }
+}
+?>
+\end{lstlisting}

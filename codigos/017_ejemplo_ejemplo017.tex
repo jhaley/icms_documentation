@@ -1,0 +1,40 @@
+\begin{lstlisting}[label=jha_file,caption=JhaFile.]
+<?php
+...
+
+class JhaFile extends JhaObject {
+	var $_pathfile;
+	var $_content;
+	
+	public function __construct($pathfile = '', $content = ''){
+		...
+	}
+	
+	public function setPathFile($pathfile){
+		$this->_pathfile = $pathfile;
+	}
+	
+	public function setContent($content){
+		$this->_content = $content;
+	}
+	
+	public function getContent(){
+		return $this->_content;
+	}
+	
+	/**
+	 * Se encarga de escribir el archivo.
+	 */
+	public function write(){
+		...
+	}
+	
+	/**
+	 * Se encarga de leer el archivo.
+	 */
+	public function read(){
+		...
+	}
+}
+?>
+\end{lstlisting}

@@ -1,0 +1,13 @@
+\begin{lstlisting}[label=mvc_controlador,caption=Clase Controlador,language=PHP]
+<?php
+
+class Controlador {
+	
+	public function mostrar(){
+		$vista = new Vista();
+		$vista->setPlantilla('principal');
+		$vista->mostrar();
+	}
+}
+?>
+\end{lstlisting}

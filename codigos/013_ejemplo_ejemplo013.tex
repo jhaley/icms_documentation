@@ -1,0 +1,17 @@
+\begin{lstlisting}[label=compress_zip,caption=Compresos Zip.]
+<?php
+defined( '_JHAEXEC' ) or die( 'Access Denied' );
+jhaimport('jhaley.compress.archive');
+
+class ZipFile extends Archive {
+	function __construct($name) {
+		parent::__construct($name);
+		$this->options['type'] = "zip";
+	}
+
+	function createZip() {
+		...
+	}
+}
+?>
+\end{lstlisting}

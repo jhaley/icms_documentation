@@ -1,0 +1,13 @@
+\begin{lstlisting}[label=compress_tar,caption=Empaquetadores Tar.]
+class TarFile extends Archive {
+	function __construct($name) {
+		parent::__construct($name);
+		$this->options['type'] = "tar";
+	}
+
+	function createTar() {
+		...
+	}
+}
+?>
+\end{lstlisting}

@@ -1,0 +1,27 @@
+\begin{lstlisting}[label=jha_model,caption=JhaModel.]
+<?php
+...
+
+class JhaModel extends JhaObject {
+	
+	protected $_name;
+	protected $_module;
+	
+    public function __construct(){
+        if (empty( $this->_name ) || empty( $this->_module )) {
+            $this->_name = $this->getName();
+            $this->_module = $this->getModule();
+        }
+    }
+    
+    public function &getTable($name = '') {
+    	...
+    }
+    ...
+    
+    public function &getInstance($name, $prefix){
+        ...
+    }
+}
+?>
+\end{lstlisting}

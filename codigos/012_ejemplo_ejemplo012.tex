@@ -1,0 +1,37 @@
+\begin{lstlisting}[label=compress_downloadable,caption=Opciones para la descarga de los compresos.]
+<?php
+defined( '_JHAEXEC' ) or die( 'Access Denied' );
+
+class Archive {
+    .....
+    function downloadFile() {
+		if ($this->options['inmemory'] == 0) {
+			$this->error[] = "Can only use download_file() if archive is in memory. Redirect to file otherwise, it is faster.";
+			return;
+		}
+		switch ($this->options['type']) {
+			case "zip":
+				header("Content-Type: application/zip");
+			break;
+			case "bzip":
+				header("Content-Type: application/x-bzip2");
+			break;
+			case "gzip":
+				header("Content-Type: application/x-gzip");
+			break;
+			case "tar":
+				header("Content-Type: application/x-tar");
+		}
+		$header = "Content-Disposition: attachment; filename=\"";
+		$header .= strstr($this->options['name'], "/") ? substr($this->options['name'], strrpos($this->options['name'], "/") + 1) : $this->options['name'];
+		$header .= "\"";
+		header($header);
+		header("Content-Length: " . strlen($this->archive));
+		header("Content-Transfer-Encoding: binary");
+		header("Cache-Control: no-cache, must-revalidate, max-age=60");
+		header("Expires: Sat, 01 Jan 2000 12:00:00 GMT");
+		print($this->archive);
+	}
+}
+?>
+\end{lstlisting}
