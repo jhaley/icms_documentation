@@ -235,13 +235,42 @@ La clase \emph{JhaController} se encarga de ejecutar las acciones tr\'as las cua
 
 \newpage
 \subsubsection{Clases para la Gesti\'on de Renderizadores}
-Las clases que se muestran en el siguiente diagrama, se utilizan para renderizar un tipo de contenido en particular, tenemos rederizadores para bloques, m\'odulos, men\'u de administraci\'on, plantillas, etc.\\
+Las clases que se muestran en el siguiente diagrama, se utilizan para renderizar alg\'un tipo de contenido en particular, se tienen rederizadores para los bloques, los m\'odulos, el men\'u de administraci\'on, las plantillas, etc.\\
+Si bien todos los renderizadores tienen el m\'etodo ``render'' cada renderizador tiene un comportamiento totalmente diferente al de otro.
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=.38, keepaspectratio=true]{imagenes/10_imagen.png}
+\includegraphics[scale=.45, keepaspectratio=true]{imagenes/10_imagen.png}
 \caption{Modelo de clases: Renderizadores. [Elaboraci\'on propia].}
 \end{figure}
+
+A continuaci\'on vemos en detalle cada uno de los renderizadores.\\
+
+El renderizador \textit{JhaRenderer} hereda de la clase \textit{JhaObject}, este se encarga de renderizar la plantilla entera, es decir que de alguna manera este hace uso de los dem\'as renderizadores.\\
+Los siguientes m\'etodos son parte de este renderizador:
+\begin{description}
+\item[render] B\'asicamente este m\'etodo es el punto de partida para la renderizaci\'on.
+\item[loadTemplate] Retorna la plantilla como si fuera una cadena para hacerla m\'as manejablea nivel de c\'odigo.
+\item[renderTemplate] Recibe como parametro el resultado de ``loadTemplate'', en base a este parametro agrega contenidos que son los resultados de los otros renderizadores.
+\item[getBuffer] Este m\'etodo act\'ua como discriminador, dependiendo del tipo de contenido que debe mostrarse llama a uno u otro renderizador. En el caso de los bloques hace una comprobaci\'on adicional que le permite saber si un bloque se debe mostrar o no a trav\'es de los m\'etodos ``canShowed'' e ``isRenderable''.
+\item[getBlocks] Es un m\'etodo auxiliar para ``getBuffer''.
+\end{description}
+
+\input{codigos/022_ejemplo_ejemplo022}
+
+El renderizador \textit{JhaRendererModule} tambi\'en hereda de la clase \textit{JhaObject}, este se encarga de renderizar los m\'odulos unicamente.\\
+Este renderizador solamente cuenta con el m\'etodo render ya que no necesita hacer ning'un tipo de comprobaci\'on, de esto se encargan los propios m\'odulos.
+
+\input{codigos/023_ejemplo_ejemplo023}
+
+El renderizador \textit{JhaRendererBlock} al igual que los anteriores, tambi\'en hereda de la clase \textit{JhaObject}, este se encarga de renderizar unicamente los bloques, algo que cabe destacar es que cada bloque tienen un conjunto de configuraciones para lo cual cuenta con un m\'etdo auxiliar para este menester.\\
+A continuaci\'on vemos una descripci\'on de los m\'etodos que son parte de este renderizador:
+\begin{description}
+\item[render] En escencia se encarga de devolver el resultado de renderizar alg\'un bloque.
+\item[getParams] Retorna los parametros para el bloque, esta informaci\'on se la obtiene de la base de datos juntamente con el contenido del bloque.
+\end{description}
+
+\input{codigos/024_ejemplo_ejemplo024}
 
 \subsection{Modelo de Base de Datos}
 El modelo de base de datos o modelo Entidad-Relaci\'on, contiene tablas que son propias del motor de renderizado de plantillas, tambi\'en est\'an presentes algunas tablas que son parte de las extensiones (contenido, menu). Escencialmente son extensiones, pero a la vez son una parte fundamental del \textit{i}CMS.
