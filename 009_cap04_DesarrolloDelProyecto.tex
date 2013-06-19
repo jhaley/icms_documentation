@@ -272,6 +272,52 @@ A continuaci\'on vemos una descripci\'on de los m\'etodos que son parte de este 
 
 \input{codigos/024_ejemplo_ejemplo024}
 
+El renderizador \textit{JhaRendererHead} se encarga de renderizar unicamente elementos que van en el tag HTML ``head''.\\
+A continuaci\'on vemos una descripci\'on de los m\'etodos que son parte de este renderizador:
+\begin{description}
+\item[render] Renderiza los las hojas de estilo (CSS) y los scripts (JS) dependiendo del tipo de sesi\'on.
+\item[cleanHeadVars] Esto limpia los elementos duplicados, adem\'as crea un orden entre los elementos que son parte del tag ``tag''.
+\end{description}
+
+\input{codigos/025_ejemplo_ejemplo025}
+
+El renderizador \textit{JhaAJAXRenderer} se encarga de renderizar unicamente bloques y/o m\'odulos. Este renderizador no sigue el flujo normal que es pasar por la clase \textit{JhaRenderer}, sino que como su nombre indica esta dise\~nado para las peticiones as\'incronas.\\
+Los m\'etodos que son parte de este renderizador son:
+\begin{description}
+\item[render] Renderiza bloques y m\'odulos dependiendo de la petici\'on AJAX.
+\item[getBlock] Recupera los datos del bloque, si es que la petici\'on AJAX est\'a relacionada con los bloques.
+\end{description}
+
+\input{codigos/026_ejemplo_ejemplo026}
+
+El renderizador \textit{JhaRendererAdminMenu} al igual que los anteriores, tambi\'en hereda de la clase \textit{JhaObject}, este renderizador est\'a destinado unicamente a renderizar el menu de administraci\'on.\\
+Los m\'etodos que son parte de este renderizador son:
+\begin{description}
+\item[render] Renderiza los menus y sub menus de administraci\'on, el resto de m\'etodos son auxiliares para renderizar fragmentos del menu: \textit{createMenu}, \textit{createSubMenuBD}, \textit{getModuleList} y \textit{getAttributes}.
+\end{description}
+
+\input{codigos/027_ejemplo_ejemplo027}
+
+El renderizador \textit{JhaThemeRenderer} tambi\'en hereda de la clase \textit{JhaObject}, este renderizador est\'a destinado unicamente a renderizar la plantilla en modo de personalizaci\'on, esto significa que podremos personalizarla desde la interfaz gr\'afica.\\
+Los m\'etodos que son parte de este renderizador son:
+\begin{description}
+\item[render] Renderiza la plantilla de forma muy similar a \textit{JhaRenderer} con la diferencia de que no renderiza el contenido sino que inserta en su lugar elementos para su manipulaci\'on desde la interfaz gr\'afica, es decir para personalizar la plantilla.
+\end{description}
+
+\input{codigos/028_ejemplo_ejemplo028}
+
+La clase \textit{JhaHTML} no es precisamente un renderizador de contenido especializado como el de los m\'odulos o bloques, pero en su lugar es capaz de generar contenido HTML simple como tags `link', `script' y `title'.\\
+Los m\'etodos que son parte de este renderizador son:
+\begin{description}
+\item[stylesheet] Renderiza un tag `link' con alguna hoja de estilos.
+\item[script] Renderiza un tag `script' con alg\'un contenido javascript ya sea contenido en linea o desde un archivo.
+\item[title] Renderiza un tag `title' con el titulo de la p\'agina.
+\item[tagHTML] Renderiza un tag HTML arbitrario.
+\item[renderControls] Renderiza el conjunto de controles de administraci\'on de contenidos, es decir los controles de Nuevo, Editar, Eliminar, Guardar, Cancelar. En el panel de administraci\'on estos controles son muy comunes, as\'i que este m\'etodo facilita mucho su creaci\'on
+\end{description}
+
+\input{codigos/029_ejemplo_ejemplo029}
+
 \subsection{Modelo de Base de Datos}
 El modelo de base de datos o modelo Entidad-Relaci\'on, contiene tablas que son propias del motor de renderizado de plantillas, tambi\'en est\'an presentes algunas tablas que son parte de las extensiones (contenido, menu). Escencialmente son extensiones, pero a la vez son una parte fundamental del \textit{i}CMS.
 
