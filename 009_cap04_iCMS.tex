@@ -1,0 +1,327 @@
+\part{DESARROLLO DEL PROYECTO}
+
+\chapter{\textit{i}CMS}
+\newpage
+\section{Introducci\'on}
+El proyecto iCMS no sigue una metodolog\'ia de desarrollo en particular, por lo tanto este cap\'itulo muestra los elementos utilizados tanto para el desarrollo mismo del proyecto como tambi\'en parte de los resultados obtenidos (modelos).\\
+
+El desarrollo del proyecto fue basado en una lista de tareas para poder conseguir la arquitectura inicial del \textit{i}CMS.\\
+
+\section{Lista de tareas}
+La lista de tareas que se muestran a continuaci\'on sirvio de base para poder desarrollar el \textit{i}CMS.
+
+\begin{itemize}
+\item Definir estructura de Directorios y Archivos.
+\item Definir configuraciones b\'asicas.
+\item Desarrollar renderizador para las plantillas.
+\item Dise\~nar estructura de los m\'odulos y bloques.
+\item Desarrollar renderizador para m\'odulos y bloques.
+\item Desarrollar clases Singleton (Request, DBO, Factory, Editor WYSIWYG).
+\item Desarrollar bloque de menus.
+\item Desarrollar bloque de usuarios (pantalla de acceso - login)
+\item Desarrollar modulo de contenido.
+\item Desarrollar modulo de usuarios (formulario de registro, modificación de datos).
+\item Crear librerías de “drag and drop” personalizadas y generalizadas para cualquier tipo de contenido (artículos, bloques, etc.).
+\end{itemize}
+
+Durante el desarrollo de estas tareas, han ido surgiendo nuevas tareas m\'as especializadas.
+
+\begin{itemize}
+\item Desarrollar m\'odulo de men\'us.
+\item Desarrollar bloque de navegaci\'on (breadcrumb).
+\item Desarrollar bloque y m\'odulo de noticias.
+\item Mejorar el renderizador de plantillas para soportar el reordenamiento de bloques.
+\item Actualizar el renderizador de plantillas para soportar soportar la edici\'on de la plantilla.
+\end{itemize}
+
+\section{Arquiterctura}
+Para dise\~nar la arquitectura del sistema \textit{i}CMS se considerar\'on dos patrones arquitect\'onicos, el patr\'on MVC (Modelo-Vista-Controlador) y el patr\'on MVP (Modelo-Vista-Presentador).\\
+
+Mucho de este patr\'on se ven en los distintos m\'odulos que componen el \textit{i}CMS, tambi\'en vemos otros patrones presentes en el desarrollo del proyecto (Singleton, Factory Method).\\
+
+A continuaci\'on se presenta un peque\~no ejemplo sin el patr\'on MVC y luego el mismo ejemplo pero aplicando el patr\'on MVC y el patr\'on MVP:\\
+
+Como se puede apreciar en el siguiente ejemplo, todos los elementos de la aplicaci\'on estan mezclados en un solo archivo.
+
+\input{codigos/005_ejemplo_ejemplo005}
+
+El patr\'on MVC separa los elementos de una aplicacion en tres grupos (Modelos, Vistas y Controladores).\\
+
+El controlador es el elemento que se encarga de gestionar todas los eventos que son generados por el usuario a trav\'es de las Vistas, as\'i como tambi\'en de generar las vistas que son el resultado de dichas acciones.
+
+\input{codigos/001_ejemplo_ejemplo001}
+
+El modelo es el elemento encargado de la gesti\'on de los datos (almacenamiento y recuperaci\'on).
+
+\input{codigos/002_ejemplo_ejemplo002}
+
+La vista es el elemento encargado de estructurar los datos recuperados para presentarlos al usuario, la vista conoce la existencia del modelo y puede interactuar con el.
+
+\input{codigos/003_ejemplo_ejemplo003}
+
+La plantilla es un elemento auxiliar de la vista, no es una clase, sino un archivo html con el m\'inimo que sirve para maquetar los datos obtenidos en la vista.
+
+\input{codigos/004_ejemplo_ejemplo004}
+
+El patr\'on MVP separa (al igual que el patr\'on MVC) los elementos de una aplicaci\'on en tres grupos (Modelos, Vistas y Presentadores). La mayor diferencia entre MVC y MVP es que en el patr\'on MVP, la Vista no sabe de la existencia del Modelo, algo que no sucede en el patr\'on MVC.\\
+
+El presentador es b\'asicamente un controlador, pero no delega la responsabilidad de procesar la informaci\'on que llega ya sea desde la vista o del modelo.
+
+\input{codigos/006_ejemplo_ejemplo006}
+
+El modelo trabaja de la misma forma que en el patr\'on MVC.
+
+\input{codigos/007_ejemplo_ejemplo007}
+
+La vista es el elemento encargado de estructurar los datos recuperados por el presentador para mostrarlos al usuario.
+
+\input{codigos/008_ejemplo_ejemplo008}
+
+Dadas las enormes similitudes entre estos dos patrones, se decidi\'o hacer uso del patr\'on MVC, la raz\'on para esta elecci\'on es que todas las extensiones tienen caracteristicas similares pero no iguales a las de Joomla, con lo cual se plantea para un futuro brindar el soporte necesario para que \textit{i}CMS sea totalmente compatible con las extensiones de Joomla.\\
+
+\section{Modelo de Clases}
+Como ya fue citado en el marco referencial, el modelo clases es la herramienta que da soporte, de alguna manera a la Programaci\'on Orientada a Objetos. Representando a los objetos que son participes del de sistema \textit{i}CMS.\\
+A continuaci\'on podemos ver el modelo de clases general del proyecto \textit{i}CMS.
+
+\newpage
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.24, keepaspectratio=true]{imagenes/03_imagen.png}
+\caption{Modelo de clases general. [Elaboraci\'on propia].}
+\end{figure}
+\clearpage
+\newpage
+
+\subsection{Aplicaci\'on de los patrones \textit{Singleton} y \textit{Factory Method}}
+La aplicaci\'on de estos patrones en el sistema se da en tres clases que son utlizadas por todo el sistema, desde el \textit{Framework Jhaley} hasta las extensiones (m\'odulos y bloques).\\
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.5, keepaspectratio=true]{imagenes/04_imagen.png}
+\caption{Modelo de clases: Patrones Singleton y Factory Method. [Elaboraci\'on propia].}
+\end{figure}
+
+La clase \emph{JhaFactory} es la encargada de crear las instancias Singleton, si la instancia ya existe, entonces esta es reutilizada.
+
+\input{codigos/009_ejemplo_ejemplo009}
+
+Un ejemplo claro del uso del patr\'on Singleton se puede ver en la instancia de la clase \emph{JhaDBO}, la cual es utilizada constantemente en los modelos de los distintos m\'odulos.
+
+\input{codigos/010_ejemplo_ejemplo010}
+
+\subsection{Manejo de Archivos compresos}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.4, keepaspectratio=true]{imagenes/05_imagen.png}
+\caption{Modelo de clases: Manejo de Archivos Compresos. [Elaboraci\'on propia].}
+\end{figure}
+
+El manejo de archivos compresos esta dado por un grupo de clases especializadas para este cometido, adem\'as estas clases utilizan elementos propios del core de PHP a trav\'es de la manipulaci\'on de los archivos compresos en forma de datos binarios.\\
+
+La superclase \textit{Archive} contiene ciertos elementos que merecen ser detallados.\\
+
+Una de las caractiristicas primordiales es que sus configuraciones est\'an dadas por una serie de opciones:
+\begin{itemize}
+	\item[\textbf{basedir}], describe el directorio donde se comprimir\'an/descomprimir\'an los archivos.
+	\item[\textbf{name}], describe el nombre del archivo compreso.
+	\item[\textbf{inmemory}], describe se se manipulara el archivo directamente desde el disco duro o en memoria.
+	\item[\textbf{level}], describe el nivel de compresi\'on.
+	\item[...] entre otros.
+\end{itemize}
+
+\input{codigos/011_ejemplo_ejemplo011}
+
+Otra caracter\'istica es la posibilidad de crear archivos descargables desde los navegadores.
+
+\input{codigos/012_ejemplo_ejemplo012}
+
+%Ejemplo Zip y diferencia con Tar
+Las clases \emph{ZipFile} y \emph{TarFile} extienden directamente de \emph{Archive}, mientras que \emph{ZipFile} representa a los archivos compresos completamente formados, \emph{TarFile} representa a un archivo de empaquetado.
+
+\input{codigos/013_ejemplo_ejemplo013}
+
+\input{codigos/014_ejemplo_ejemplo014}
+
+Los compresos \emph{Gzip}, \emph{TGzip}, \emph{Bzip} y \emph{TBzip} son representados por las subclases \emph{GzipFile} y \emph{BzipFile}. Lo que se gana separando en distintas clases el manejo de los compresos son dos cosas. Primero, que se tienen clases especializadas en un solo tipo de compreso a la vez. Segundo, que es mucho m\'as sencillo a\~nadir nuevos tipos de compresos por medio de la herencia y definici\'on del comportamiento del nuevo compreso.
+
+\subsection{Clases para la Gesti\'on de la Base de Datos}
+Las clases que se ven en el siguiente gr\'afico son escenciales para la gesti\'on de la informaci\'on en la base de datos. La clase \textit{JhaDBO} sigue el patr\'on Singleton y es utilizado en todas las llamadas a la base de datos, la clase JhaTable es la superclase para todos los DTOs (Data Transfer Object) que representan a las tablas de la base de datos.\\
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.5, keepaspectratio=true]{imagenes/06_imagen.png}
+\caption{Modelo de clases: Gesti\'on de Base de Datos. [Elaboraci\'on propia].}
+\end{figure}
+
+A continuaci\'on se describen brevemente las clases dedicadas a la gesti\'on de base de datos.\\
+
+Todo los objetos de \textit{iCMS} tienen la capacidad de redireccionar a otras URLs, esto es bastante \'util sobre todo en la secci\'on de administraci\'on de \textit{i}CMS, tambi\'en cuentan con la capacidad de recuperar sus propiedades internas de los objetos.\\
+
+\input{codigos/015_ejemplo_ejemplo015}
+
+\emph{JhaDBO} es un objeto creado con la \'unica finalidad de procesar y ejecutar las consultas SQL nativas, adicionalmente contiene funciones auxiliares para realizar el trabajo de procesamiento de las consultas.
+
+\input{codigos/016_ejemplo_ejemplo016}
+
+\subsection{Clases para la Gesti\'on de Archivos y Directorios}
+Las clases para la gesti\'on de los archivos y directorios se muestran en el siguiente diagrama. La clase \textit{JhaFile} sirve principalmente para la lectura y escritura de archivos, la clase \textit{JhaDirectory} provee una estructura para gestionar los archivos y subdirectorios de un directorio.\\
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.5, keepaspectratio=true]{imagenes/07_imagen.png}
+\caption{Modelo de clases: Gesti\'on de Archivos y Directorios. [Elaboraci\'on propia].}
+\end{figure}
+
+A continuaci\'on se describen brevemente las clases dedicadas a la gesti\'on de archivos y directorios.\\
+
+La clase \emph{JhaFile} permite interactuar de forma directa con los diferentes archivos a trav\'es de sus m\'etodos \emph{read} y \emph{write}.\\
+
+\input{codigos/017_ejemplo_ejemplo017}
+
+La clase \emph{JhaDirectory} se combina con los objetos de tipo \emph{JhaFile} para permitir interactuar tanto con los diferentes archivos como con los directorios a trav\'es de sus m\'etodos \emph{getFolders} y \emph{getFiles}, ademas cuenta con una funci\'on extra para validar las extensiones de los archivos \emph{validateExtension}.\\
+
+\input{codigos/018_ejemplo_ejemplo018}
+
+\subsection{Clases para la Gesti\'on de Elementos Web}
+Las clases para la gesti\'on de los elementos web se muestran en el siguiente diagrama. Estas clases estan basadas en el Framework Goaamb (desarrollado por el Ingeniero de Sistemas Alvaro Michel Barrera).\\
+Todas estas clases han sido pensadas principalmente para trabajar con generadores de c\'odigo, pero en el proyecto iCMS se hace uso de ellas principalmente en el manejo de archivos XML y JS.\\
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.4, keepaspectratio=true]{imagenes/08_imagen.png}
+\caption{Modelo de clases: Gesti\'on de Elementos Web. [Elaboraci\'on propia].}
+\end{figure}
+
+Como podemos ver en la figura anterior, la super clase \emph{Tag} contienen la mayor parte de las funciones propias para los elementos HTML y PHP. Asimismo muchos de los elementos HTML est\'an representados por las clases: \emph{HtmlTag}, \emph{InputTag}, \emph{Select}, \emph{Option} y \emph{Tabla}. Por otro lado tenemos a la clase para el manejo de documentos XML: \emph{XmlTag}. Para el manejo de c\'odigos PHP, tenemos la clase \emph{PhpTag}; dado que los elementos JavaScript tienen cierto parecido con los tags php, la clase JSTag extiende de esta \'ultima.\\
+Los elementos JSON se comportan de una manera muy distinta a los elementos que tienen ``tags'', raz\'on por lo cual la clase \emph{JSON} no extiende de ninguna otra.
+
+\subsection{Clases de la Arquitectura del \textit{i}CMS}
+Las clases que se muestran a continuaci\'on son las superclases que representan al patr\'on Modelo-Vista-Controlador. Las implementaciones de estas superclases estan presentes en las distintas extensiones (m\'odulos).\\
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.65, keepaspectratio=true]{imagenes/09_imagen.png}
+\caption{Modelo de clases: Modelo-Vista-Controlador. [Elaboraci\'on propia].}
+\end{figure}
+
+La clase \emph{JhaModel} describe dos m\'etodos importantes como \emph{getTable} y \emph{getInstance}; \emph{getTable} se encarga de recuperar objetos de tipo \emph{JhaTable} y es principalmente utilizada a la hora de recuperar registros de la base de datos. Por otro lado \emph{getInstance} retorna una instancia del modelo en cuesti\'on, es decir que depende del m\'odulo desde el que se llame a este m\'etodo.
+
+\input{codigos/019_ejemplo_ejemplo019}
+
+La clase \emph{JhaView} se encarga de renderizar las diferentes plantillas dependiendo del controlador y la acci\'on relacionada a estos, en resumen por cada acci\'on que ejecute el controlador, la vista puede renderizar diferentes pantallas, es por eso que cada vista tiene 'n' plantillas, a continuaci\'on se describen los m\'etodos m\'as importantes:
+\begin{description}
+\item[display] Se encarga de mostrar plantilla por defecto para la vista.
+\item[getModel] Retorna el modelo para el m\'odulo al que pertenece la vista.
+\item[setLayout] Esteblece la plantilla que se utilizara para renderizar el resultado de ejecutar la acci\'on en el controlador.
+\item[assignRef] Esteblece referencias a los valores recuperados desde el modelo, en s\'intesis a\~nade nuevos atributos a la vista, de forma que la plantilla los pueda utilizar de forma casi transparente.
+\item[getInstance] Devuelve una instancia de la vista, al igual que con el modelo, esta acci\'on depende del contexto.
+\end{description}
+
+\input{codigos/020_ejemplo_ejemplo020}
+
+La clase \emph{JhaController} se encarga de ejecutar las acciones tr\'as las cuales se delega la responsabilidad de renderizar el resultado a alguna de las vistas, a continuaci\'on se describen los m\'etodos m\'as importantes de esta clase:
+\begin{description}
+\item[display] Se encarga de hacer que la vista muestre su plantilla por defecto.
+\item[execute] Ejecuta el m\'etodo correspondiente a la acci\'on a ejecutarse, por defecto ejecuta la acci\'on ``display''.
+\item[getView] Retorna la vista asociada al controlador.
+\item[getModel] Retorna el modelo para el m\'odulo al que pertenece la vista.
+\end{description}
+
+\input{codigos/021_ejemplo_ejemplo021}
+
+\newpage
+\subsection{Clases para la Gesti\'on de Renderizadores}
+Las clases que se muestran en el siguiente diagrama, se utilizan para renderizar alg\'un tipo de contenido en particular, se tienen rederizadores para los bloques, los m\'odulos, el men\'u de administraci\'on, las plantillas, etc.\\
+Si bien todos los renderizadores tienen el m\'etodo ``render'' cada renderizador tiene un comportamiento totalmente diferente al de otro.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.45, keepaspectratio=true]{imagenes/10_imagen.png}
+\caption{Modelo de clases: Renderizadores. [Elaboraci\'on propia].}
+\end{figure}
+
+A continuaci\'on vemos en detalle cada uno de los renderizadores.\\
+
+El renderizador \textit{JhaRenderer} hereda de la clase \textit{JhaObject}, este se encarga de renderizar la plantilla entera, es decir que de alguna manera este hace uso de los dem\'as renderizadores.\\
+Los siguientes m\'etodos son parte de este renderizador:
+\begin{description}
+\item[render] B\'asicamente este m\'etodo es el punto de partida para la renderizaci\'on.
+\item[loadTemplate] Retorna la plantilla como si fuera una cadena para hacerla m\'as manejablea nivel de c\'odigo.
+\item[renderTemplate] Recibe como parametro el resultado de ``loadTemplate'', en base a este parametro agrega contenidos que son los resultados de los otros renderizadores.
+\item[getBuffer] Este m\'etodo act\'ua como discriminador, dependiendo del tipo de contenido que debe mostrarse llama a uno u otro renderizador. En el caso de los bloques hace una comprobaci\'on adicional que le permite saber si un bloque se debe mostrar o no a trav\'es de los m\'etodos ``canShowed'' e ``isRenderable''.
+\item[getBlocks] Es un m\'etodo auxiliar para ``getBuffer''.
+\end{description}
+
+\input{codigos/022_ejemplo_ejemplo022}
+
+El renderizador \textit{JhaRendererModule} tambi\'en hereda de la clase \textit{JhaObject}, este se encarga de renderizar los m\'odulos unicamente.\\
+Este renderizador solamente cuenta con el m\'etodo render ya que no necesita hacer ning'un tipo de comprobaci\'on, de esto se encargan los propios m\'odulos.
+
+\input{codigos/023_ejemplo_ejemplo023}
+
+El renderizador \textit{JhaRendererBlock} al igual que los anteriores, tambi\'en hereda de la clase \textit{JhaObject}, este se encarga de renderizar unicamente los bloques, algo que cabe destacar es que cada bloque tienen un conjunto de configuraciones para lo cual cuenta con un m\'etdo auxiliar para este menester.\\
+A continuaci\'on vemos una descripci\'on de los m\'etodos que son parte de este renderizador:
+\begin{description}
+\item[render] En escencia se encarga de devolver el resultado de renderizar alg\'un bloque.
+\item[getParams] Retorna los parametros para el bloque, esta informaci\'on se la obtiene de la base de datos juntamente con el contenido del bloque.
+\end{description}
+
+\input{codigos/024_ejemplo_ejemplo024}
+
+El renderizador \textit{JhaRendererHead} se encarga de renderizar unicamente elementos que van en el tag HTML ``head''.\\
+A continuaci\'on vemos una descripci\'on de los m\'etodos que son parte de este renderizador:
+\begin{description}
+\item[render] Renderiza los las hojas de estilo (CSS) y los scripts (JS) dependiendo del tipo de sesi\'on.
+\item[cleanHeadVars] Esto limpia los elementos duplicados, adem\'as crea un orden entre los elementos que son parte del tag ``tag''.
+\end{description}
+
+\input{codigos/025_ejemplo_ejemplo025}
+
+El renderizador \textit{JhaAJAXRenderer} se encarga de renderizar unicamente bloques y/o m\'odulos. Este renderizador no sigue el flujo normal que es pasar por la clase \textit{JhaRenderer}, sino que como su nombre indica esta dise\~nado para las peticiones as\'incronas.\\
+Los m\'etodos que son parte de este renderizador son:
+\begin{description}
+\item[render] Renderiza bloques y m\'odulos dependiendo de la petici\'on AJAX.
+\item[getBlock] Recupera los datos del bloque, si es que la petici\'on AJAX est\'a relacionada con los bloques.
+\end{description}
+
+\input{codigos/026_ejemplo_ejemplo026}
+
+El renderizador \textit{JhaRendererAdminMenu} al igual que los anteriores, tambi\'en hereda de la clase \textit{JhaObject}, este renderizador est\'a destinado unicamente a renderizar el menu de administraci\'on.\\
+Los m\'etodos que son parte de este renderizador son:
+\begin{description}
+\item[render] Renderiza los menus y sub menus de administraci\'on, el resto de m\'etodos son auxiliares para renderizar fragmentos del menu: \textit{createMenu}, \textit{createSubMenuBD}, \textit{getModuleList} y \textit{getAttributes}.
+\end{description}
+
+\input{codigos/027_ejemplo_ejemplo027}
+
+El renderizador \textit{JhaThemeRenderer} tambi\'en hereda de la clase \textit{JhaObject}, este renderizador est\'a destinado unicamente a renderizar la plantilla en modo de personalizaci\'on, esto significa que podremos personalizarla desde la interfaz gr\'afica.\\
+Los m\'etodos que son parte de este renderizador son:
+\begin{description}
+\item[render] Renderiza la plantilla de forma muy similar a \textit{JhaRenderer} con la diferencia de que no renderiza el contenido sino que inserta en su lugar elementos para su manipulaci\'on desde la interfaz gr\'afica, es decir para personalizar la plantilla.
+\end{description}
+
+\input{codigos/028_ejemplo_ejemplo028}
+
+La clase \textit{JhaHTML} no es precisamente un renderizador de contenido especializado como el de los m\'odulos o bloques, pero en su lugar es capaz de generar contenido HTML simple como tags `link', `script' y `title'.\\
+Los m\'etodos que son parte de este renderizador son:
+\begin{description}
+\item[stylesheet] Renderiza un tag `link' con alguna hoja de estilos.
+\item[script] Renderiza un tag `script' con alg\'un contenido javascript ya sea contenido en linea o desde un archivo.
+\item[title] Renderiza un tag `title' con el titulo de la p\'agina.
+\item[tagHTML] Renderiza un tag HTML arbitrario.
+\item[renderControls] Renderiza el conjunto de controles de administraci\'on de contenidos, es decir los controles de Nuevo, Editar, Eliminar, Guardar, Cancelar. En el panel de administraci\'on estos controles son muy comunes, as\'i que este m\'etodo facilita mucho su creaci\'on
+\end{description}
+
+\input{codigos/029_ejemplo_ejemplo029}
+
+\section{Modelo de Base de Datos}
+El modelo de base de datos o modelo Entidad-Relaci\'on, contiene tablas que son propias del motor de renderizado de plantillas, tambi\'en est\'an presentes algunas tablas que son parte de las extensiones (contenido, menu). Escencialmente son extensiones, pero a la vez son una parte fundamental del \textit{i}CMS.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.6, keepaspectratio=true]{imagenes/12_imagen.png}
+\caption{Modelo de Base de Datos. [Elaboraci\'on propia].}
+\end{figure}
+
+\clearpage
