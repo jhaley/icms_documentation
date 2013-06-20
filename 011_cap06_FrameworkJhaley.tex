@@ -1,0 +1,253 @@
+\chapter{FRAMEWORK JHALEY}
+\newpage
+\section{Introducci\'on}
+Como todo CMS tiene un conjunto de librer\'ias definidas para su funcionamiento, iCMS no es la excepci\'on, en el presente cap\'itulo se presenta un vistazo general de los elementos del ``Framework Jhaley'' creados para desarrollar este CMS, dise\~nado para hacer de la reutilizaci\'on de c\'odigo algo innato en el desarrollo del CMS y principalmente para el soporte de nuevas extensiones y en los est\'andares necesarios para el CMS.\\
+El framework contempla elementos para ciertas acciones concretas como: 
+\begin{itemize}
+\item Gesti\'on de variables REQUEST.
+\item Gesti\'on de archivos compresos (*.tar, *.tgz, *.tbz).
+\item Conexiones y manipulaci\'on de datos (Base de Datos).
+\item Gesti\'on de archivos y directorios.
+\item Renderizadores.
+\item Librer\'ias Javascript.
+\item Patr\'on MVC
+\item Librer\'ias para gesti\'on de elementos web.
+\item Gesti\'on de XML.
+\item Librer\'ias para editor WYSIWYG (``What You See Is What You Get'').
+\end{itemize}
+\ldots\ Entre otras.
+
+\section{Arquitectura del Framework}
+El framework \textit{Jhaley} para el motor de renderizado utiliza un patr\'on arquitect\'onico de Modelo-Vista-Controlador, gracias a este patr\'on todas las extensiones estan obligadas a seguirlo tambi\'en, la principal ventaja de esta ``regla'' es que todas las extensiones estan muy bienestructuradas facilintando el mantenimineto de las mismas.\\
+
+\section{Librer\'ia JhaFactory}
+La librer\'ia JhaFactory, como su nombre indica sigue el patr\'on de dise\~no ``\textit{Factory}'', el cual se encarga de tener \'unicamente funciones dispuestas para la creaci\'on de instancias de otros objetos. En nuestro caso en concreto se encarga de crear instancias como:
+\begin{itemize}
+\item \textbf{JhaDBO}, Objeto de Conexion a la base de datos.
+\item \textbf{JhaConfiguration}, Objeto de configuraci\'on general del CMS para un sitio en concreto.
+\item \textbf{Renderers}, Objetos de Renderizaci\'on (\textsf{JhaRenderer}, \textsf{JhaModuleRenderer}, \textsf{JhaBlockRenderer}, etc).
+\item \textbf{JhaEditor}, Instancia del editor WYSIWYG.
+\end{itemize}
+Tambi\'en cabe destacar que JhaFactory al igual que otras clases es global con respecto del sistema, esto significa que puede ser utilizado desde cualquier punto dentro de la aplicaci\'on.
+
+\section{Librer\'ia JhaRequest}
+La librer\'ia JhaRequest, es una clase global que provee funciones est\'aticas para la manipulaci\'on principalmente de las variables del HTMLRequest (REQUEST, POST, GET), pero su uso tambi\'en est\'a en las variables SERVER, SESSION.\\
+Entre las funciones que cumple est\'a el que tiene la capacidad de filtrar los valores que se obtienen del HTMLRequest, bajo tres criterios bien marcados:
+\begin{itemize}
+\item \begin{description}
+	\item[NOTRIM] Este filtro le permite considerar como v\'alido el valor obtenido no importando si dicho valor lleva espacios al inicio o final.
+	\end{description}
+\item \begin{description}
+	\item[ALLOWRAW] Este filtro le permite considerar como v\'alido el valor obtenido sin ninguna restricci\'on.
+	\end{description}
+\item \begin{description}
+	\item[ALLOWHTML] Este filtro le permite considerar como v\'alido el valor obtenido solo si es HTML.
+	\end{description}
+\end{itemize}
+Tambi\'en tiene una directiva que le permite obtener un conjunto de valores (Lista), siempre y cuando los nombres con los que llegaron dichos valores tienen un prefijo en com\'un.
+%%insertar ejemplo en codigo.
+
+\section{Librer\'ia de Utilidades (JhaUtility)}
+Est\'a librer\'ia ofrece funciones est\'andar de ayuda para realizar distintas tareas tales como: Buscar un elemento en funcion de su id, ver si un elemento pertenece a una lista, remover un elemento de una lista, insertar un elemento en una posici\'on dada de una lista, verificar si los usuarios son Editores o Administradores.
+
+\section{Librer\'ia Import}
+Est\'a librer\'ia no contiene una clase sino mas bien una funci\'on, cuyo \'unico trabajo es importar las librer\'ias del framework en cualquier parte de la aplicaci\'on. Recibe una cadena con el formato \textsf{'jhaley.mvc.model'}, donde los puntos representan la sucesi\'on de los paquetes, en este caso el paquete \textsf{mvc} est\'a dentro del paquete \textsf{jhaley}, el \'ultimo elemento, vale decir \textsf{model}, es la librer\'ia como tal.\\
+Obviamente que para poder acceder al archivo de la librer\'ia de manera interna se construye la ruta absoluta.
+
+\section{Librer\'ias del paquete \textsf{base}}
+\subsection{JhaObject}
+Esta librer\'ia provee un objeto base est\'andar con ciertas caracter\'isticas que son comunes a todos las clases del sistema.\\Las propiedades que define son: 
+\begin{itemize}
+\item \textsf{getProperties(\$isPublic:boolean):array}, cada objeto es capaz de devolver la lista de sus atributos, si \textsf{\$isPublic} es \textsf{true} devuelve solo los atributos p\'ublicos.
+\item \textsf{redirect(\$url:String):void}, cada objeto es capaz de redireccionar a una direcci\'on distinta por medio del par\'ametro \textsf{\$url}.
+\end{itemize}
+
+\section{Librer\'ias del paquete \textsf{compress}}
+Este conjunto de librer\'ias fueron creadas para manipular archivos comprimidos (.ZIP, .TAR, .TAR.GZ o .TGZ, .TAR.BZ o .TBZ).
+\subsection{Archive}
+Superclase para los archivos comprimidos, dado que cada tipo de compreso lleva caracter\'isticas especiales, a trav\'es de est\'a se definen funciones y atributos comunes para la manipulaci\'on de los compresos.\\Todas las clases que heredan de est\'a son capaces de crear archivos compresos.
+\subsection{ZIP}
+Est\'a clase provee una estructura para manipular y crear archivos .ZIP, est\'a librer\'ia no posee mecanismos para la descompresi\'on de los compresos .ZIP.
+\subsection{TAR}
+Est\'a clase se convierte en la base tanto para la manipulaci\'on de los .TGZ o .TAR.GZ y tambi\'en para los .TBZ o .TAR.BZ, por si solo tambi\'en es capaz de empaquetar y desempaquetar los archivos .TAR.
+\subsection{GZIP}
+Uno de los tipos de archivos compresos m\'as comunes dentro de la comunidad del software libre. Est\'a clase especializa la clase TAR, para proveer un mecanismo de compresi\'on alternativo al ZIP tradicional. AL igual que las otras clases es capaz de crear compresos y descomprimirlos.
+\subsection{BZIP}
+Est\'a clase, al igual que GZIP, tambi\'en hereda de la clase TAR convirtiendose en otra alternativa al ZIP tradicional o al GZIP, tambi\'en posee la capacidad de crear compresos y descomprimirlos.
+
+\section{Librer\'ias del paquete \textsf{css}}
+Este conjunto de librer\'ias esta compuesto enteramente de archivos .CSS, que proveen estilos est\'andar para el CMS independientemente de la plantilla.
+\subsection{base.css}
+Durante la administraci\'on muchos de los elementos son capaces de moverse entre las regiones definidas de la plantilla, \textsf{base} provee estilos para resaltar estos elementos m\'oviles.
+\subsection{menu.css}
+Solo utilizable durante la administraci\'on, provee estilos para el men\'u de administraci\'on.
+
+\section{Librer\'ias del paquete \textsf{db}}
+Este conjunto de librer\'ias esta creado para gestionar todo lo relacionado a las bases de datos, incluidos el objetos de conexion, las clase que proveen la estructura de las tablas.
+\subsection{JhaDBO}
+Esta librer\'ia se encarga de crear la conexion entre la aplicaci\'on y la base de datos, asimismo provee de funciones para ejecutar consultas, funciones de inserci\'on, funciones de eliminaci\'on entre otras.
+\begin{itemize}
+\item \textsf{open():boolean}, utiliza una instancia de la clase \textsf{JhaConfiguration} para obtener los datos como el servidor de base de datos, nombre de usuario y nombre de la base de datos, y con ellos abrir una conexion con el servidor.
+\item \textsf{isConnected():boolean}, verifica si existe una conexion activa.
+\item \textsf{close():void}, cierra la conexion activa.
+\item \textsf{setQuery(\$query:String, \$offset:int, \$limit:int):void}, establece la consulta para su futura ejecuci\'on, asimismo recibe los parametros \textsf{\$offset} y \textsf{\$limit} para determinar el nivel de paginaci\'on, en caso de no haberlos se establecen valores por defecto.
+\item \textsf{executeQuery(\$query:String):boolean}, ejecuta la consulta pasada a trav\'es del parametro \textsf{\$query} y devuelve su resultado.
+\item \textsf{loadObject():Object}, Devuelve un objeto est\'andar con los resultados de la consulta, generalmente utilizado cuando la consulta solicita un registro en concreto.
+\item \textsf{loadObjectList():array}, Devuelve una lista de objetos est\'andar con los resultados de la consulta, generalmente utilizado cuando la consulta solicita varios registros de la base de datos.
+\item \textsf{insertObject(\$table:String, \&\$object:Object, \$keyName:String):boolean}, inserta un registro en la tabla \textsf{\$table} de la base de datos, con los datos contenidos en el objeto \textsf{\$object} y utilizando a \textsf{\$keyName} como elemento auxiliar para verificar si se registro correctamente.
+\item \textsf{updateObject(\$table:String, \&\$object:Object, \$keyName:String, \$updateNulls:boolean):boolean}, actualiza un registro en la tabla \textsf{\$table} de la base de datos, con los datos contenidos en el objeto \textsf{\$object} y utilizando a \textsf{\$keyName} como parte de la condici\'on para verificar que es el registro correcto, la bandera \textsf{\$updateNulls} especifica si los campos que ahora son NULL deben actualizarse tambi\'en o no.
+\item \textsf{deleteObject(\$table:String, \&\$object:String, \$keyName:String):boolean}, funciona de manera similar a los dos anteriores, con la diferencia de que esta funci\'on est\'a dise\~nada para eliminar registros de la base de datos.
+\end{itemize}
+
+\subsection{JhaTable}
+Est\'a superclase define propiedades y comportamientos similares para las tablas de la base de datos, facilitando principalmente la inserci\'on, actualizaci\'on y eliminaci\'on de los registros de la base de datos.\\
+Entre los atributos de esta clase est\'an: \textsf{\$table$\_$key}, \textsf{\$table} y \textsf{\$dbo}.
+\begin{itemize}
+\item \textsf{load(\$objid:int):void}, est\'a funci\'on es la encargada de cargar la informaci\'on desde la base de datos en funcion del \textsf{\$table$\_$key} como campo y \textsf{\$objid} como valor.
+\item \textsf{bind(\$elem:mixed):boolean}, Establece los atributos del objeto tabla en funci\'on a \textsf{\$elem} que puede ser un array u objeto.
+\item \textsf{store():mixed}, es una funci\'on que guarda la informaci\'on contenida en el objeto tabla a la base de datos, esta funci\'on es capaz de diferenciar si lo que se guarda es un nuevo registro o si se actualiza uno existente, devuelve false si no logra guardar y devuelve un entero con la clave del registro si se logra guardar.
+\item \textsf{delete():boolean}, es una funci\'on que elimina un registro de la base de datos en funci\'on de la informaci\'on contenida en el objeto tabla.
+\item \textsf{getInstance(\$name:String):JhaTable}, la clase JhaTable es capaz de construir instancias en base al nombre de la tabla.
+\end{itemize}
+
+\subsection{Librer\'ias del paquete \textsf{tables}}
+Este paquete contiene las clases para la creaci\'on de estructuras que representan a las tablas de la base de datos, cada clase hereda de la clase JhaTable para especializar y definir los atributos correspondientes.
+
+\section{Librer\'ias del paquete \textsf{editor}}
+Este es un conjunto de librer\'ias creado por terceros, concretamente, el editor lleva el nombre de ckeditor, siendo uno de los m\'as potentes editores WYSIWYG, permite la manipulaci\'on del contenido desde el HTML o de manera gr\'afica, facilita la inserci\'on de im\'agenes, animaciones en flash, tipo de letra, tama\~no de letra y varias otras funciones m\'as.
+
+\section{Librer\'ias del paquete \textsf{file}}
+Las librer\'ias de este paquete est\'an dise\~nadas para manipular los archivos y directorios.
+
+\subsection{JhaDirectory}
+Esta librer\'ia provee una estructura para manipular los archivos de un directorio.
+\begin{itemize}
+\item \textsf{read():void}, lee un directorio en funci\'on del atributo \textsf{\$$\_$pathfile}, que es propiedad de la clase JhaDirectory, y almacena el resultado en una lista \textsf{\$$\_$files} que tambi\'en es un atributo de JhaDirectory.
+\item \textsf{getFolders():array}, filtra y devuelve solo los directorios de la lista \textsf{\$$\_$files}.
+\item \textsf{getFiles(\$filetypes:array):array}, filtra y devuelve solo los archivos de la lista \textsf{\$$\_$files}, siempre y cuando la extensi\'on de estos sea alguno de los que vienen en \textsf{\$filetypes}.
+\end{itemize}
+
+\subsection{JhaFile}
+JhaFile es una librer\'ia que facilita la lectura y escritura de archivos.
+\begin{itemize}
+\item \textsf{setContent(\$content:String):void}, se establece el valor del atributo \textsf{\$$\_$content} con el valor de \textsf{\$content}.
+\item \textsf{getContent():String}, devuelve el valor contenido en \textsf{\$$\_$content}.
+\item \textsf{write():void}, escribe el valor contenido en \textsf{\$$\_$content} en el archivo descrito en el atributo \textsf{\$$\_$pathfile}.
+\item \textsf{read():void}, lee el contenido del archivo descrito en \textsf{\$$\_$pathfile} y lo guarda en el atributo \textsf{\$$\_$content}.
+\end{itemize}
+
+\section{Librer\'ias del paquete \textsf{filefinder}}
+Este es un conjunto de librer\'ias creado por terceros, concretamente, el editor lleva el nombre de ckfinder, de los mismos creadores del ckeditor, estas librer\'ias tienen como finalidad proveer el soporte para manipular las imagenes en el servidor, y hacerlas visibles en el cliente para su uso a trav\'es del ckeditor. Es decir, si se quiere agregar nuevas im\'agenes al contenido del CMS, esta librer\'ia se encargar\'a de subir al servidor las nuevas im\'agenes y tambi\'en direccionarlas correctamente en el contenido.
+
+\section{Librer\'ias del paquete \textsf{html}}
+Este es un conjunto de librer\'ias son en realidad los motores de renderizaci\'on de la aplicaci\'on, cuenta con un renderizador de nivel superior que hace uso de los otros renderizadores, generando como resultado HTML que se muestra en el navegador del cliente.
+
+\subsection{JhaRenderer}
+Como se ha mencionado antes, este es el renderizador principal, cuya \'unica tarea es renderizar la plantilla por defecto y acomodar el contenido sobre dicha plantilla, para ello obtiene la estructura de la plantilla y utiliza a los renderizadores secundarios para obtener el contenido de la p\'agina.\\
+Las funciones presentes en esta librer\'ia son:
+
+\begin{itemize}
+\item \textsf{render():void}, est\'a funci\'on es el punto de inicio del renderizado de la plantilla y su contenido.
+\item \textsf{loadTemplate(\$row:mixed):String}, obtiene el HTML de la plantilla que se ir\'a a mostrar, este HTML contiene tambi\'en una descripci\'on de las regiones donde ir\'a el contenido de la p\'agina.
+\item \textsf{renderTemplate(\$template:String):String}, esta funci\'on se encarga de incluir el contenido para cada region.
+\item \textsf{getBuffer(\$type:String, \$region:String):String}, esta funci\'on determina el renderizador secundario a utilizar para obtener el contenido almacenado en la base de datos.
+\end{itemize}
+
+\subsection{JhaModuleRenderer}
+Este renderizador solo obtiene el contenido que se procesa por las extensiones conocidas como \textit{m\'odulos} y lo devuelve al renderizador principal para ser acomodado sobre la plantilla.
+
+\subsection{JhaBlockRenderer}
+Este renderizador obtiene el contenido que procesan los bloques, estos bloques solo obtienen informaci\'on de la base de datos en funci\'on de la region para la que se esta obteniendo el contenido.
+
+\subsection{JhaHeadRenderer}
+JhaHeadRenderer se encarga de renderizar los elementos del tag HTML $<$head$><$/head$>$, tales como las referencias a CSS, o a Javascript.
+
+\subsection{JhaAJAXRenderer}
+Este renderizador se utiliza cuando se hacen llamadas via AJAX al servidor, ya sea para obtener contenido a trav\'es de los m\'odulos o bloques. Retorna solo el contenido generado por los renderizadores de m\'odulos o bloques y no asi el de toda la p\'agina.
+
+\subsection{JhaThemeRenderer}
+Este renderizador solo se utiliza a la hora de personalizar las plantillas, la raz\'on es que no se muestra nada de contenido, solo estructura.
+
+\subsection{JhaRendererAdminMenu}
+Este renderizador es utilizado para renderizar el men\'u de administraci\'on, este men\'u solo aparece para el administrador, se trabaja en conjunto con la librer\'ia \textit{xml}. Cuenta con la capacidad de crear submenus a distintos niveles, es decir, submenus de submenus.
+
+\subsection{JhaHTML}
+Esta librer\'ia renderiza HTML arbitrario, tales como checkboxes, controles (botones guardar, eliminar, nuevo, editar, cancelar, etc), tags \textit{link}, tags \textit{script} y cualquier elemento HTML.
+
+\section{Librer\'ias del paquete \textsf{mvc}}
+Este es un conjunto de librer\'ias proveen superclases que definen el patr\'on Modelo-Vista-Controlador, generalizando las caracter\'isticas comunes a cada elemento del patr\'on.
+
+\subsection{JhaModel}
+Superclase que abstrae los modelos para todos los m\'odulos. Cuenta con \textit{\$$\_$name} y \textit{\$$\_$module} como atributos.\\
+Las funciones que provee esta clase son:
+\begin{itemize}
+\item \textsf{getTable(\$name:String):JhaTable}, esta funci\'on devuelve un objeto JhaTable espec\'ifico de acuerdo al parametro \$name, si este parametro es nulo, se utiliza el atributo \$$\_$name de la clase.
+\item \textsf{getNames():mixed}, obtiene tanto el nombre del m\'odulo como el nombre del modelo en concreto de acuerdo al controlador que lo requiere.
+\item \textsf{getInstance(\$name:String, \$preffix:String):JhaModel}, esta funci\'on se encarga de construir una instancia del modelo de acuerdo a los parametros recibidos en \$name y \$preffix.
+\end{itemize}
+
+\subsection{JhaController}
+Superclase que abstrae los controladores para todos los m\'odulos. Cuenta con \textit{\$$\_$tasks}, \textit{\$$\_$name} y \textit{\$$\_$module} como atributos.\\
+Las funciones que provee esta clase son:
+\begin{itemize}
+\item \textsf{display():void}, esta funci\'on genera el HTML por defecto a trav\'es de la vista asociada al controlador.
+\item \textsf{execute(\$task):mixed}, solo se encarga de llamar a la funci\'on definida en el parametro \$task, si este parametro es nulo, se llama a la funcion \textit{display()}.
+\item \textsf{getNames():mixed}, obtiene tanto el nombre del m\'odulo como el nombre del modelo en concreto de acuerdo al controlador que lo requiere.
+\item \textsf{getView(\$view):JhaView}, construye y devuelve un objeto JhaView de acuerdo al m\'odulo y al parametro \$view, si \$view es nulo, se toma el atributo \$$\_$name como parametro.
+\item \textsf{getModel(\$model):JhaModel}, construye y devuelve un objeto JhaModel de acuerdo al m\'odulo y al parametro \$model, si \$model es nulo, se toma el atributo \$$\_$name como parametro.
+\end{itemize}
+
+\subsection{JhaView}
+Superclase que abstrae las vistas para todos los m\'odulos. Cuenta con \textit{\$$\_$name}, \textit{\$$\_$module}, \textit{\$$\_$layout}, \textit{\$$\_$ext} y \textit{\$$\_$model} como atributos.\\
+Las funciones que provee esta clase son:
+\begin{itemize}
+\item \textsf{display():void}, esta funci\'on genera el HTML que el m\'odulo devolvera al renderizador, utiliza a \$$\_$layout como elemento para decidir que html mostrar.
+\item \textsf{getNames():mixed}, obtiene tanto el nombre del m\'odulo como el nombre del modelo en concreto de acuerdo al controlador que lo requiere.
+\item \textsf{getModel(\$model):JhaModel}, construye y devuelve un objeto JhaModel de acuerdo al m\'odulo y al parametro \$model, si \$model es nulo, se toma el atributo \$$\_$name como parametro.
+\item \textsf{setLayout(\$layout:String):void}, establece el valor del atributo \$$\_$layout.
+\item \textsf{getLayout():String}, devuelve el atributo \$$\_$layout que sirve para definir el HTML a mostrar.
+\end{itemize}
+
+\section{Librer\'ias del paquete \textsf{web}}
+Este conjunto de librer\'ias provee un medio para representar el HTML como la estructura DOM, asimismo provee un medio para representar el XML. Esta librer\'ia esta basada en el Goaamb Framework.
+
+\subsection{Tag}
+Provee una estructura general para representar cualquier elemento, ya sea HTML, XML, JSON o PHP.
+
+\subsection{JSON}
+Hereda las propiedades y funciones de la clase Tag, tambi\'en provee funciones concretas para la representaci\'on de elementos JSON.
+
+\subsection{XmlTag}
+Hereda las propiedades y funciones de la clase Tag, y provee funciones concretas para la representaci\'on de elementos XML.
+
+\subsection{HtmlTag}
+Hereda las propiedades y funciones de la clase Tag, y provee funciones concretas para la representaci\'on de elementos HTML.
+
+\subsection{PhpTag}
+Hereda las propiedades y funciones de la clase Tag, y provee funciones concretas para la representaci\'on de elementos PHP.
+
+\section{Librer\'ias del paquete \textsf{xml}}
+Este paquete solo contiene un archivo \textit{adminmenu.xml}, que describe la estructura del men\'u de administraci\'on, esta librer\'ia trabaja en conjunto con el JhaRendererAdminMenu.
+
+\section{Librer\'ias del paquete \textsf{js}}
+Este paquete provee una serie de archivos Javascript, que ofrecen funciones para trabajar con: ajax, drag and drop (arrastrar y soltar), efectos (sobreponer, entrar y salir), elementos DOM, efectos de men\'u, men\'us contextuales y ventanas emergentes.
+
+\subsection{jha.js}
+Contiene un objeto JSON que provee funciones de utilidades para obtener informaci\'on del navegador, utilidades para manipulaci\'on de objetos DOM, utilidades para manejo de listas y utilidades para manejo de HTML (validaciones).
+
+\subsection{ajax.js}
+Contiene un objeto JSON que provee funciones netamente para manipular las conexiones v\'ia AJAX.
+
+\subsection{drag.js}
+Contiene un objeto JSON que brinda funciones para el efecto de arrastrar y soltar, que tienen los bloques de contenido, adem\'as provee fuciones adicionales para poder guardar el estado y el orden de los bloques en la base de datos.
+
+\subsection{effect.js}
+Contiene un objeto JSON que tiene funciones para generar efectos visuales como: sobreponer y efectos verticales, utilizado principalmente por el bloque de noticias.
+
+\subsection{pmenu.js}
+Contiene un objeto JSON que provee funciones para crear los menus contextuales.
+
+\subsection{popup.js}
+Contiene un objeto JSON que tiene funciones para gestionar las ventanas emergentes.
+
+\clearpage

@@ -1,0 +1,27 @@
+\begin{lstlisting}[label=jha_block_login_helper,caption=Helper del bloque `Login'.]
+<?php
+...
+
+class JhaLoginHelper {
+	private $params;
+	
+	function __construct($params) {
+		$this->params = $params;
+	}
+	
+    public function getTask() {
+    	if(isset($_SESSION['USER'])) {
+    		return 'logout';
+    	}
+    	return 'login';
+    }
+    
+    public function getUser(){
+    	if(isset($_SESSION['USER'])){
+    		return $_SESSION['USER'];
+    	}
+    	return NULL;
+    }
+}
+?>
+\end{lstlisting}
