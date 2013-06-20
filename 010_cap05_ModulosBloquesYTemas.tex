@@ -8,7 +8,7 @@ Todos los m\'odulos siguen el patr\'on Modelo-Vista-Controlador, adem\'as maneja
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=2, keepaspectratio=true]{imagenes/19_imagen.png}
+\includegraphics[scale=1, keepaspectratio=true]{imagenes/19_imagen.png}
 \caption{Estructura de Directorios: M\'odulos. [Elaboraci\'on propia].}
 \end{figure}
 
@@ -30,9 +30,31 @@ Algo que es necesario mencionar es que una vista esta asociada a muchas plantill
 El directorio ``html'' se encarga de contener las plantillas HTML, del cual se sirven las vistas para dar formato a la informaci\'on, estos archivos contienen en su mayoria (por no decir en su totalidad) contenido HTML con fragmentos de c\'odigo PHP unicamente.\\
 
 \section{Estructura de los bloques}
-Los bloques se registran en la base de datos, tienen en com\'un un campo llamado \textit{params} el cual sirve para establecer los parametros que definen como se debe mostrar\'a el contenido del bloque.\\
-Por otro lado varios de los bloques, tienen un archivo denominado \textit{helper}, que se encarga de proveer funciones de acceso a datos y utilidades.\\
-Todos los renderizadores de bloques llevan un archivo \textit{param.php}, el cual sirve para definir los parametros de cada bloque.\\
+Los bloques esencialmente son porciones de contenido fijo en alg\'un lugar de la p\'agina, lostemas definen regiones donde se muestra el contenido, algunos tipos de regiones estan destinados a los bloques, donde el renderizador de bloques establece este contenido.\\
+
+Tomando como ejemplo el bloque ``login'', tenemos que de forma muy similar a los m\'odulos, el nombre del directorio de un bloque lleva un prefijo ``block$\_$'', dando como resultado ``block$\_$login''.\\
+
+Dentro del directorio del bloque tenemos los siguientes archivos: helper, login, params, info.xml y el directorio html que contiene un archivo logintpl.\\
+
+\textbf{\textit{Helper}}, contiene una clase que tiene el siguiente formato para su nombre: Jha<<nombre$\_$bloque>>Helper, esto a fin de que el renderizador sepa como llamar al Helper. Esta clase solo provee funciones de ayuda para el bloque, algunas veces se encarga de la obtencion de informaci\'on de la base de datos.\\
+
+\input{codigos/031_ejemplo_ejemplo031}
+
+\textbf{\textit{Login}}, sirve como punto de entrada al bloque y contiene porciones de c\'odigo que hacen uso del Helper y tambi\'en de la plantilla ``logintpl''.\\
+
+\input{codigos/032_ejemplo_ejemplo032}
+
+\textbf{\textit{Params}}, Este archivo es unicamente utilizado al momento de la creaci\'on o edici\'on de un bloque de tipo ``login'' y su finalidad es la configuraci\'on de los parametros extra que se utilizar\'an por el renderizador al renderizar el bloque.\\
+
+\input{codigos/033_ejemplo_ejemplo033}
+
+\textbf{\textit{Info.xml}}, Proporciona informaci\'on sobre el bloque tales como: nombre del bloque, renderizador, descripci\'on del bloque, autor y fecha de creaci\'on.\\
+
+\input{codigos/034_ejemplo_ejemplo034}
+
+\textbf{\textit{Logintpl}}, Es un archivo que contiene una estructura HTML con porciones de codigo PHP para insertar la informaci\'on obtenida a trav\'es del Helper, su nombre sigue el formato: <<nombre$\_$bloque>>tpl.\\
+
+\input{codigos/035_ejemplo_ejemplo035}
 
 \section{Relaci\'on entre m\'odulos y bloques}
 Los bloques y m\'odulos no guardan relaci\'on a nivel de c\'odigo, cada uno tiene una finalidad espec\'ifica.\\

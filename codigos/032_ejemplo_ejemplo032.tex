@@ -1,0 +1,13 @@
+\begin{lstlisting}[label=jha_block_login,caption=Punto de entrada al bloque.]
+<?php
+...
+
+require_once $GLOBALS['JHA_BLOCK_PATH'] . 'helper.php';
+
+$helper = new JhaLoginHelper($params);
+$task = $helper->getTask();
+$user = $helper->getUser();
+
+require_once $GLOBALS['JHA_BLOCK_PATH'] . 'html' . DS . 'logintpl.php';
+?>
+\end{lstlisting}
