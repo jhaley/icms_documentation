@@ -79,15 +79,7 @@ La configuraci\'on del CMS se hace a trav\'es del archivo \textit{JhaConfigurati
 \subsection{Gesti\'on de plantillas}
 La gesti\'on de plantillas comprende dos elementos importantes.\\
 El primero de estos elementos, permite agregar nuevas plantillas e intercambiar la apariencia de la p\'agina a trav\'es de las plantillas.\\
-Las plantillas que se suben al servidor deben tener una estructura concreta. Se deben tener m\'inimamente los siguientes archivos en un compreso ya sea tar.gz, tar.bz:
-\begin{itemize}
-\item index.php
-\item info.xml
-\item install.sql
-\end{itemize}
-\ldots\ Adicionalmente se pueden tener un directorio para im\'agenes y otro directorio para los css.\\
 El segundo elemento permite personalizar la plantilla que se designa por defecto para mostrarse en el sitio. Para este efecto el m\'odulo provee mecanismos para ver las regiones definidas en la plantilla, asimismo tiene mecanismos para dividir las regiones ya sea en columnas o filas. Tambi\'en las regiones pueden moverse para reacomodar las regiones.\\
-Este motor de gesti\'on de las plantillas provee una gama de opciones para que el usuario pueda personalizar a\'un m\'as su plantilla.
 
 \subsection{Gesti\'on de bloques}
 Los bloques son los contenidos secundarios, todos los bloques trabajan de forma muy similar, todas ellas tienen un renderizador espec\'ifico, en s\'intesis cada bloque tiene su propio renderizador.\\
@@ -162,7 +154,7 @@ En cap\'itulos anteriores vimos el m\'odulo de men\'u, en el cual se gestiona lo
 Este renderizador trabaja en conjunto con el m\'odulo de contenido, concretamente con el gestor de noticias, este bloque solo se encarga de mostrar las noticias, las noticias pueden tener efectos animados dado que tambi\'en utilizan los efectos de la librer\'ia \textit{effect} del \textit{framework jhaley}.
 
 \section{Temas}
-En este cap\'itulo se tiene una descripci\'on de los temas que forman parte del CMS. Los temas o \textit{templates} son simplemente elementos que le dan al CMS la apariencia en funci\'on de los CSS e im\'agenes.\\
+Los temas o \textit{templates} son simplemente elementos que le dan al CMS la apariencia en funci\'on de los CSS e im\'agenes.\\
 Por el momento se tiene dos temas creados especificamente para el CMS:
 
 \begin{itemize}
@@ -173,5 +165,31 @@ Por el momento se tiene dos temas creados especificamente para el CMS:
 	\item[Tema Enikma] Este tema es una alternativa de apariencia para el CMS.
 \end{description}
 \end{itemize}
+
+\textit{i}CMS tiene la capacidad para subir nuevas plantillas, estas plantillas deben tener una estructura concreta. Se deben tener m\'inimamente los siguientes archivos en un compreso ya sea tar.gz, tar.bz:
+\begin{itemize}
+\item index.php
+\item info.xml
+\item install.sql
+\end{itemize}
+\ldots\ Adicionalmente se pueden tener un directorio para im\'agenes y otro directorio para los css.\\
+Este motor de gesti\'on de las plantillas provee una gama de opciones para que el usuario pueda personalizar a\'un m\'as su plantilla.
+
+A continuaci\'on vemos en detalle cada uno de los elementos que componen la plantilla:\\
+
+\emph{Index.php}, contiene una definici\'on de las regiones de las plantillas donde ir\'an los distintos tipos de contenido.\\
+
+\input{codigos/036_ejemplo_ejemplo036}
+
+Algo que destacar acerca de este archivo son la forma de definir las regiones, las cuales tienen el siguiente formato para la mayor\'ia de los elementos: $<$jhadoc:include type=``type'' /$>$\\
+Para las regiones definidas como bloques se usa el siguiente formato: $<$jhadoc:include type=``block'' region=``region'' /$>$\\
+
+\emph{Info.xml}, Al igual que con los bloques, este elemento sirve para definir las propiedades de la plantilla, como el nombre, autor, adem\'as de las regiones de los bloques.\\
+
+\input{codigos/037_ejemplo_ejemplo037}
+
+\emph{Install.sql}, Index.php define el marco principal de la plantilla, pero la definici\'on de las regiones son guardadas en la Base de datos, este archivo contiene una sentencia SQL para guardar dicha informaci\'on.\\
+
+\input{codigos/038_ejemplo_ejemplo038}
 
 \clearpage
