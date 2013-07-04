@@ -1,7 +1,7 @@
 \chapter{FRAMEWORK JHALEY}
 \newpage
 \section{Introducci\'on}
-Como todo CMS tiene un conjunto de librer\'ias definidas para su funcionamiento, iCMS no es la excepci\'on, en el presente cap\'itulo se presenta un vistazo general de los elementos del ``Framework Jhaley'' creados para desarrollar este CMS, dise\~nado para hacer de la reutilizaci\'on de c\'odigo algo innato en el desarrollo del CMS y principalmente para el soporte de nuevas extensiones y en los est\'andares necesarios para el CMS.\\
+Como todo CMS tiene un conjunto de librer\'ias definidas para su funcionamiento, \textit{i}CMS no es la excepci\'on, en el presente cap\'itulo se presenta un vistazo general de los elementos del ``Framework Jhaley'' creados para desarrollar este CMS, dise\~nado para hacer de la reutilizaci\'on de c\'odigo algo innato en el desarrollo del CMS y principalmente para el soporte de nuevas extensiones y en los est\'andares necesarios para el CMS.\\
 El framework contempla elementos para ciertas acciones concretas como: 
 \begin{itemize}
 \item Gesti\'on de variables REQUEST.
@@ -18,7 +18,7 @@ El framework contempla elementos para ciertas acciones concretas como:
 \ldots\ Entre otras.
 
 \section{Arquitectura del Framework}
-El framework \textit{Jhaley} para el motor de renderizado utiliza un patr\'on arquitect\'onico de Modelo-Vista-Controlador, gracias a este patr\'on todas las extensiones estan obligadas a seguirlo tambi\'en, la principal ventaja de esta ``regla'' es que todas las extensiones estan muy bienestructuradas facilintando el mantenimineto de las mismas.\\
+El framework \textit{Jhaley} para el motor de renderizado utiliza un patr\'on arquitect\'onico de Modelo-Vista-Controlador, gracias a este patr\'on todas las extensiones estan obligadas a seguirlo tambi\'en, la principal ventaja de esta ``regla'' es que todas las extensiones estan muy bien estructuradas facilitando el mantenimineto de las mismas.\\
 
 \section{Librer\'ia JhaFactory}
 La librer\'ia JhaFactory, como su nombre indica sigue el patr\'on de dise\~no ``\textit{Factory}'', el cual se encarga de tener \'unicamente funciones dispuestas para la creaci\'on de instancias de otros objetos. En nuestro caso en concreto se encarga de crear instancias como:
@@ -28,6 +28,9 @@ La librer\'ia JhaFactory, como su nombre indica sigue el patr\'on de dise\~no ``
 \item \textbf{Renderers}, Objetos de Renderizaci\'on (\textsf{JhaRenderer}, \textsf{JhaModuleRenderer}, \textsf{JhaBlockRenderer}, etc).
 \item \textbf{JhaEditor}, Instancia del editor WYSIWYG.
 \end{itemize}
+
+\input{codigos/039_ejemplo_ejemplo039}
+
 Tambi\'en cabe destacar que JhaFactory al igual que otras clases es global con respecto del sistema, esto significa que puede ser utilizado desde cualquier punto dentro de la aplicaci\'on.
 
 \section{Librer\'ia JhaRequest}
@@ -49,6 +52,8 @@ Tambi\'en tiene una directiva que le permite obtener un conjunto de valores (Lis
 
 \section{Librer\'ia de Utilidades (JhaUtility)}
 Est\'a librer\'ia ofrece funciones est\'andar de ayuda para realizar distintas tareas tales como: Buscar un elemento en funcion de su id, ver si un elemento pertenece a una lista, remover un elemento de una lista, insertar un elemento en una posici\'on dada de una lista, verificar si los usuarios son Editores o Administradores.
+
+\input{codigos/040_ejemplo_ejemplo040}
 
 \section{Librer\'ia Import}
 Est\'a librer\'ia no contiene una clase sino mas bien una funci\'on, cuyo \'unico trabajo es importar las librer\'ias del framework en cualquier parte de la aplicaci\'on. Recibe una cadena con el formato \textsf{'jhaley.mvc.model'}, donde los puntos representan la sucesi\'on de los paquetes, en este caso el paquete \textsf{mvc} est\'a dentro del paquete \textsf{jhaley}, el \'ultimo elemento, vale decir \textsf{model}, es la librer\'ia como tal.\\
@@ -80,7 +85,7 @@ Este conjunto de librer\'ias esta compuesto enteramente de archivos .CSS, que pr
 \subsection{base.css}
 Durante la administraci\'on muchos de los elementos son capaces de moverse entre las regiones definidas de la plantilla, \textsf{base} provee estilos para resaltar estos elementos m\'oviles.
 \subsection{menu.css}
-Solo utilizable durante la administraci\'on, provee estilos para el men\'u de administraci\'on.
+Solo es utilizable durante la administraci\'on, provee estilos para el men\'u de administraci\'on.
 
 \section{Librer\'ias del paquete \textsf{db}}
 Este conjunto de librer\'ias esta creado para gestionar todo lo relacionado a las bases de datos, incluidos el objetos de conexion, las clase que proveen la estructura de las tablas.
@@ -235,11 +240,28 @@ Este paquete provee una serie de archivos Javascript, que ofrecen funciones para
 \subsection{jha.js}
 Contiene un objeto JSON que provee funciones de utilidades para obtener informaci\'on del navegador, utilidades para manipulaci\'on de objetos DOM, utilidades para manejo de listas y utilidades para manejo de HTML (validaciones).
 
+\input{codigos/041_ejemplo_ejemplo041}
+
+A continuaci\'on vemos en detalle las distintas funciones presentes en este script:
+\begin{itemize}
+\item \textsf{nav}, este objeto interno se encarga de recuperar la informaci\'on acerca del navegador del cliente.
+\item \textsf{dom}, se encarga de la manipulaci\'on de los elementos DOM, la busqueda de elementos, la creaci\'on de nuevos elementos, as\'i como tambi\'en de la gesti\'on de los eventos.
+\item \textsf{util}, provee mecanismo para la manipulacion de objetos ``array''.
+\item \textsf{html}, este objeto provee mecanismos para la verificaci\'on de los campos de los formularios.
+\end{itemize}
+
 \subsection{ajax.js}
 Contiene un objeto JSON que provee funciones netamente para manipular las conexiones v\'ia AJAX.
 
+\input{codigos/042_ejemplo_ejemplo042}
+
+\begin{itemize}
+\item \textsf{jha.ajax}, se encarga de realizar una llamada ajax est\'andar, es decir que una vez recibida la respuesta se ejecuta la acci\'on por defecto.
+\item \textsf{ajaxupdate}, hace una llamada est\'andar pero con la diferencia de que una vez recibida la respuesta se ejecuta una acci\'on definida por el usuario en vez de la acci\'on est\'andar.
+\end{itemize}
+
 \subsection{drag.js}
-Contiene un objeto JSON que brinda funciones para el efecto de arrastrar y soltar, que tienen los bloques de contenido, adem\'as provee fuciones adicionales para poder guardar el estado y el orden de los bloques en la base de datos.
+Contiene un objeto JSON que brinda funciones para el efecto de arrastrar y soltar, que tienen los bloques de contenido, adem\'as provee funciones adicionales para poder guardar el estado y el orden de los bloques en la base de datos.
 
 \subsection{effect.js}
 Contiene un objeto JSON que tiene funciones para generar efectos visuales como: sobreponer y efectos verticales, utilizado principalmente por el bloque de noticias.

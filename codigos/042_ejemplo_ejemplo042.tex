@@ -1,0 +1,50 @@
+\begin{lstlisting}[label=js_ajax,caption=Objeto JSON Jha.ajax. ]
+
+Jha.ajax = function(object){
+    this.idUpdate = "";
+    this.action = "";
+    this.responseText = "";
+    this.responseXML = "";
+    this.url = "";
+    this.post = null;
+    this.json = false;
+    if (object) {
+        Jha.dom.parseObject(object, this);
+    }    
+    var xmlhttp = false;
+    if (typeof ActiveXObject != 'undefined') {
+        try { xmlhttp = new ActiveXObject("Msxml2.XMLHTTP"); } 
+        catch (e) {
+            try { xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); } 
+            catch (E) { xmlhttp = false; }
+        }
+    }
+    if (!xmlhttp && typeof XMLHttpRequest != 'undefined') {
+        xmlhttp = new XMLHttpRequest();
+    }
+    
+    this.verificarDireccion = function(){
+        ...
+    };
+    
+    this.enviarpeticion = function(){
+        ...
+    }
+    this.conectado = false;
+    this.error = 0;
+    this.enviado = false;
+    var elobjeto = this;
+    this.responseJSON = "";
+    xmlhttp.onreadystatechange = function(){
+        ...
+    }
+};
+
+function ajaxupdate(direccion, idcapa, action){
+    var objajax = new Jha.ajax();
+    objajax.url = direccion;
+    objajax.idUpdate = idcapa;
+    objajax.action = action;
+    objajax.enviarpeticion();
+}
+\end{lstlisting}

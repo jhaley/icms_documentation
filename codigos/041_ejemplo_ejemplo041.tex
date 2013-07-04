@@ -1,0 +1,84 @@
+\begin{lstlisting}[label=js_jha,caption=Objeto JSON Jha. ]
+
+var Jha = {
+	nav : {
+		isIE : false,
+		isNS : false,
+		isOP : false,
+		isSA : false,
+		isCH : false,
+		version : null,
+		init : function() {
+			...
+		}
+	},
+	dom : {
+		$ : function(id) {
+			...
+		},
+		$$ : function(name, position) {
+			...
+		},
+		$$$ : function(tagname, position, doc) {
+			...
+		},
+		scan : function (obj){
+			...
+		},
+		create : function (tagname){
+			...
+		},
+		position : function (obj){
+			...
+		},
+		getStyle : function (el, style) {
+			...
+		},
+		toCamelCase : function (s) {
+		    ...
+ 		},
+		parseObject : function(obj, destine) {
+	        ...
+		},
+		posFromEvent : function (event){
+			...
+		}
+	},
+	util : {
+		inArray : function (elem, array){
+			...
+		},
+		removeFromArray : function (index, array) {
+			...
+		},
+		insertIn : function (pos, elem, array){
+			...
+		}
+	},
+	html : {
+		checkbox : {
+			checkAll : function (obj, idname){
+				...
+			},
+			isChecked : function (obj){
+				...
+			},
+			validate : function (){
+				...
+			}
+		},
+		input : {
+			validate : function (valor, type){
+				...
+			}
+		},
+		select : {
+			validate : function (valor, defecto){
+				...
+			}
+		}
+	}
+};
+
+Jha.nav.init();
+\end{lstlisting}
